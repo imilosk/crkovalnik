@@ -1,21 +1,33 @@
-import QtQuick 2.6
-import QtQuick.Controls 1.4
-import QtQuick.Layouts 1.3
-import QtGraphicalEffects 1.0
+import QtQuick 2.3
+import QtQuick.Controls 1.2
 
 ApplicationWindow {
+
+    property var resolutions: [
+        {"height": 480, "width": 320, "name": "HVGA", "ratio": "3:2"},
+        {"height": 640, "width": 360, "name": "nHD", "ratio": "16:9"},
+        {"height": 640, "width": 480, "name": "VGA", "ratio": "4:3"},
+        {"height": 800, "width": 480, "name": "WVGA", "ratio": "5:3"},
+        {"height": 800, "width": 600, "name": "SVGA", "ratio": "4:3"},
+        {"height": 960, "width": 540, "name": "qHD", "ratio": "16:9"},
+        {"height": 1280, "width": 720, "name": "720p", "ratio": "16:9"},
+        {"height": 1280, "width": 800, "name": "WXGA", "ratio": "16:10"},
+        {"height": 1920, "width": 1080, "name": "1080p", "ratio": "16:9"}
+    ]
+
+    property int currentResolution: 6
+    property bool isScreenPortrait: height >= width
+
     visible: true
-    width: 1280
-    height: 720
-    color: "white"
-    title: qsTr("Hello World")
+    width: resolutions[currentResolution]["height"]
+    height: resolutions[currentResolution]["width"]
+    title: "%ProjectName%"
 
     Rectangle {
         id: menu
         x: 0
         y: 0
-        width: 1280
-        height: 720
+        anchors.fill: parent
         color: "white"
 
         Text {
@@ -38,12 +50,12 @@ ApplicationWindow {
             anchors.right: menu.right
             anchors.rightMargin: 50
             /*MouseArea {
-                          anchors.fill: parent
-                          onClicked: {
-                              game.visible = true
-                              menu.visible = false
-                          }
-                }*/
+                              anchors.fill: parent
+                              onClicked: {
+                                  game.visible = true
+                                  menu.visible = false
+                              }
+                    }*/
             Timer {
                 id: longPressTimer
                 interval: 10 //your press-and-hold interval here
@@ -165,32 +177,70 @@ ApplicationWindow {
 
 
 
-
-
-
-
-
-
-
-
-
     Rectangle {
         id: game
         x: 0
         y: 0
         visible: false
-        width: 1280
-        height: 720
+        anchors.fill: parent
         color: "azure"
 
-        Button {
-            x: 300
-            y: 300
-            text: "Prikazi menu"
-            onClicked: {
-                game.visible = false
-                menu.visible = true
+        ListModel {
+            id: besedaModel
+        }
+
+        Component {
+            id: besedaDelegate
+
+            Column {
+                /*
+                Text {
+                    text: tekst
+                    font.pointSize: 24
+                    font.capitalization: Font.AllUppercase
+                }
+                */
+                Image {
+                    fillMode: Image.PreserveAspectFit
+                    source: slika
+                    width: 150
+                    height: 150
+                }
+
             }
+        }
+
+        GridView {
+            anchors.fill: parent
+            model: besedaModel
+            delegate: besedaDelegate
+            anchors {
+                leftMargin: 150
+            }
+            cellWidth: 200
+            cellHeight: 200
+        }
+
+        Component.onCompleted: {
+            var request = new XMLHttpRequest()
+            request.open('GET', './words.json');
+            request.onreadystatechange = function() {
+                if (request.readyState === XMLHttpRequest.DONE) {
+                    if (request.status && request.status === 200) {
+                        var result = JSON.parse(request.responseText)
+                        var list = result["slike"];
+                        for (var i in list) {
+                            besedaModel.append({
+                                                   "slika": list[i].slika,
+                                                   "tekst": list[i].tekst
+                                               })
+                        }
+                    } else {
+                        console.log("HTTP:", request.status, request.statusText)
+                    }
+                }
+            }
+            request.send()
         }
 
     }
