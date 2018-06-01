@@ -31,16 +31,8 @@ Rectangle {
             model: redContainer.lettersArray
             delegate: DragTile {
                 colorKey: "green"
-                /*
-                Text {
-                    id: name
-                    text: qsTr("text")
-                }
-                */
             }
         }
-
-
     }
 
 }
