@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Layouts 1.3
 
 ApplicationWindow {
 
@@ -18,10 +19,19 @@ ApplicationWindow {
     property int currentResolution: 6
     property bool isScreenPortrait: height >= width
 
+    id: main
     visible: true
     width: resolutions[currentResolution]["height"]
     height: resolutions[currentResolution]["width"]
     title: "%ProjectName%"
+
+
+    property int level: 2
+
+
+    /***********************************************************
+     * MainMenu
+    ***********************************************************/
 
     Rectangle {
         id: menu
@@ -41,7 +51,8 @@ ApplicationWindow {
 
         Image {
             id: sett
-            source: "img/settings.png"
+
+            source: "icons/settings.png"
             signal pressAndHold()
             width: 50
             height: 50
@@ -98,7 +109,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    game.visible = true
+                    imagesGrid.visible = true
                     menu.visible = false
                 }
             }
@@ -174,11 +185,12 @@ ApplicationWindow {
 
 
 
-
-
+    /***********************************************************
+     * ImagesGrid
+    ***********************************************************/
 
     Rectangle {
-        id: game
+        id: imagesGrid
         x: 0
         y: 0
         visible: false
@@ -189,6 +201,8 @@ ApplicationWindow {
             id: besedaModel
         }
 
+
+        // This is the component where the grid cell is stored
         Component {
             id: besedaDelegate
 
@@ -200,16 +214,60 @@ ApplicationWindow {
                     font.capitalization: Font.AllUppercase
                 }
                 */
+
                 Image {
+                    id: image
                     fillMode: Image.PreserveAspectFit
                     source: slika
                     width: 150
                     height: 150
-                }
+                    MouseArea {
+                        anchors.fill: parent
+                        // What happens when you click an image
+                        onPressedChanged: {
+                            if ( !pressed ) {
+                                besedaModel.get(slika).tekst
+                                for (var i = 0; i < besedaModel.count; i++){
+                                    if (slika === besedaModel.get(i).slika) {
+                                        game.index = i;
+                                        break;
+                                    }
+                                }
 
+                                game.imagePath = slika
+                                game.word = tekst
+
+                                game.visible = true
+                                if (main.level === 1){
+                                    level1Container.visible = true
+                                    level2Container.visible = false
+                                    level3Container.visible = false
+                                    level4Container.visible = false
+                                } else if (main.level === 2){
+                                    level2Container.visible = true
+                                    level1Container.visible = false
+                                    level3Container.visible = false
+                                    level4Container.visible = false
+                                } else if (main.level === 3){
+                                    level3Container.visible = true
+                                    level1Container.visible = false
+                                    level2Container.visible = false
+                                    level4Container.visible = false
+                                } else if (main.level === 4){
+                                    level4Container.visible = true
+                                    level1Container.visible = false
+                                    level2Container.visible = false
+                                    level3Container.visible = false
+                                }
+                                imagesGrid.visible = false
+                            }
+                        }
+                    }
+                }
             }
         }
 
+        // GridView for the images
         GridView {
             anchors.fill: parent
             model: besedaModel
@@ -221,6 +279,7 @@ ApplicationWindow {
             cellHeight: 200
         }
 
+        // Load images and add them to the grid
         Component.onCompleted: {
             var request = new XMLHttpRequest()
             request.open('GET', './words.json');
@@ -241,8 +300,155 @@ ApplicationWindow {
                 }
             }
             request.send()
+
         }
 
     }
 
+
+
+
+    /***********************************************************
+     * Game
+    ***********************************************************/
+
+    Rectangle {
+        id: game
+        x: 0
+        y: 0
+        visible: false
+        anchors.fill: parent
+        color: "#202020"
+        property var imagePath: ""
+        property var word: ""
+        property var index: -1
+
+        Image {
+            id: gameImageContainer
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
+            y: 100
+            fillMode: Image.PreserveAspectFit
+            source: game.imagePath
+            width: 150
+            height: 150
+        }
+
+        Text {
+            id: gameTextContainer
+            anchors {
+                horizontalCenter: parent.horizontalCenter
+            }
+            y: 250
+            text: game.word
+            font.pointSize: 24
+            color: "white"
+            font.capitalization: Font.AllUppercase
+        }
+
+        // updates word on screen
+        function updateWord() {
+            gameImageContainer.source = besedaModel.get(game.index).slika
+            gameTextContainer.text = besedaModel.get(game.index).tekst
+            game.word = gameTextContainer.text
+
+            if (main.level === 1){
+                level1Container.lettersArray = [""]                    // MUST BE HERE TO RESET THE ARRAY IF THE SAME WORD APPEARS TWICE IN WORDS
+                level1Container.lettersArray = game.word.split("")     // example: converts "CAR" to ["C", "A", "R"]
+                level1Container.visible = true
+                level2Container.visible = false
+                level3Container.visible = false
+                level4Container.visible = false
+            }
+            else if (main.level === 2) {
+                level2Container.lettersArray = [""]                    // MUST BE HERE TO RESET THE ARRAY IF THE SAME WORD APPEARS TWICE IN WORDS
+                level2Container.lettersArray = game.word.split("")     // example: converts "CAR" to ["C", "A", "R"]
+                level2Container.visible = true
+                level1Container.visible = false
+                level3Container.visible = false
+                level4Container.visible = false
+            } else if (main.level === 3) {
+                level3Container.lettersArray = [""]                    // MUST BE HERE TO RESET THE ARRAY IF THE SAME WORD APPEARS TWICE IN WORDS
+                level3Container.lettersArray = game.word.split("")     // example: converts "CAR" to ["C", "A", "R"]
+                level3Container.visible = true
+                level1Container.visible = false
+                level2Container.visible = false
+                level4Container.visible = false
+            } else if (main.level === 4) {
+                level4Container.lettersArray = [""]                    // MUST BE HERE TO RESET THE ARRAY IF THE SAME WORD APPEARS TWICE IN WORDS
+                level4Container.lettersArray = game.word.split("")     // example: converts "CAR" to ["C", "A", "R"]
+                level4Container.visible = true
+                level1Container.visible = false
+                level2Container.visible = false
+                level3Container.visible = false
+            }
+        }
+
+        // when button is clicked, change all atrributes to previous image attributes
+        Button {
+            x: 50
+            y: main.height - 50
+            width: 50
+            text: "Prev"
+            onClicked: {
+                // prevents out of bounds
+                if (game.index > 0) {
+                    game.index--
+                    game.updateWord()
+                }
+            }
+        }
+
+        // when button is clicked, change all atrributes to next image attributes
+        Button {
+            x: main.width - 125
+            y: main.height - 50
+            width: 75
+            text: "Next"
+            onClicked: {
+                // prevents out of bounds
+                if (game.index < besedaModel.count - 1) {
+                    game.index++
+                    game.updateWord()
+                }
+            }
+        }
+
+    }
+
+
+    Level1 {
+        id: level1Container
+        visible: false
+        lettersArray: game.word.split("")
+        globalX: main.width / 2 - 64 * (game.word.split("").length) / 2
+        y: main.height / 2
+    }
+
+    Level2 {
+        id: level2Container
+        visible: false
+        lettersArray: game.word.split("")
+        globalX: main.width / 2 - 64 * (game.word.split("").length) / 2
+        y: main.height / 2
+    }
+
+    Level3 {
+        id: level3Container
+        visible: false
+        lettersArray: game.word.split("")
+        globalX: main.width / 2 - 64 * (game.word.split("").length) / 2
+        y: main.height / 2
+    }
+
+    Level4 {
+        id: level4Container
+        visible: false
+        lettersArray: game.word.split("")
+        globalX: main.width / 2 - 64 * (game.word.split("").length) / 2
+        y: main.height / 2
+    }
+
 }
+
