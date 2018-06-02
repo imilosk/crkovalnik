@@ -9,7 +9,7 @@ polja.
 4. Namesto premetanih črk iskane besede, je otroku na voljo prilagojena tipkovnica (vse
 črke slovenske abecede, brez številk in ločil).
 
-#### Done:
+#### DONE:
 - Grid slik
 - Dinamično ustvarjanje povleci-in-spusti polj z upoštevano toleranco, da ni potrebno popolno ujemanje pri "spusti"
 - Nivoji težavnosti 1-3 (se ne preveri, ali je beseda pravilno vpisana)
@@ -37,3 +37,4 @@ izbira področja besed. Od tu se preko "nazaj" lahko vrne v osnovni zaslon, k iz
 spreminja barvo, ..
 - Namesto povleci-in-spusti naj bo v nastavitvah možno izbrati klikanje na ustrezno črko
 ali uporaba enostavne tipkovnice.
+- Administratorski način (dodajanje/brisanje slik, ...)
