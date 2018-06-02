@@ -21,18 +21,17 @@ polja.
 - Nagrada po pravilno vpisani besedi
 - Settings: glasbo, zvok vklopi/izklopi, črnobele skike (preberi sliko iz datoteke), izbor nivojev
 - Uspešno akcijo (premik črke) naj spremlja nek generičen zvok / klik; prav tako za neuspešno temu ustrezen zvok
-- Uspešno/neuspešno akcijo (premik črke) ustrez pobarvaj (zeleno/rdeče)
+- Uspešno/neuspešno akcijo (premik črke) ustrezno pobarvaj (zeleno/rdeče)
 - Izhod iz igralnega zaslona naj bo le preko gumba "Nazaj", ki igralca vrne v zaslon kjer izbira področja besed. Od tu se preko "Nazaj" lahko vrne v osnovni zaslon, k izbiri igre
 
 #### MAYBE:
-- Uredi kodo, koda razporejena v večih datotekah
-- Na zaslonu naj bo slika besede na levi strani, predloga na desni premetane črke pa spodaj (kot je prikazal na predavanjih)
+- Uredi kodo, koda naj bo razporejena v večih datotekah
+- Na zaslonu naj bo slika besede na levi strani, predloga na desni premetane črke pa spodaj (kot je pokazal na predavanjih)
 izbira področja besed. Od tu se preko "nazaj" lahko vrne v osnovni zaslon, k izbiri igre
 - V nastavitvah naj bo možno izbirati med velikimi in malimi črkami
 
 #### KAJ NE BOMO NAREDILI:
-- V primeru tipkovnice, naj utripa oz. se otroku pokaže nek namig na ustrezno tipko.
-Namig (pomoč) naj bo možno v nastavitvah izklopiti.
+- V primeru tipkovnice, naj utripa oz. se otroku pokaže nek namig na ustrezno tipko. Namig (pomoč) naj bo možno v nastavitvah izklopiti.
 - Če po nekem kratkem času otrok ne poskusi z (novo) črko ali pa se je zmotil, naj se prava ˇ
 črka na nek način vizualno poudari. Lahko počasi utripa, lahko se veča in manjša, lahko
 spreminja barvo, ..
