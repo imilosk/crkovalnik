@@ -16,7 +16,6 @@ polja.
 - Gumba "Naprej" in "Nazaj" v igralnem zaslonu za spreminjanje slik 
 
 #### TODO: 
-- Nivo težavnost 4
 - Preveri, ali je beseda pravilno vpisana
 - Nagrada po pravilno vpisani besedi
 - Settings: glasbo, zvok vklopi/izklopi, črnobele skike (preberi sliko iz datoteke), izbor nivojev
@@ -25,6 +24,7 @@ polja.
 - Izhod iz igralnega zaslona naj bo le preko gumba "Nazaj", ki igralca vrne v zaslon kjer izbira področja besed. Od tu se preko "Nazaj" lahko vrne v osnovni zaslon, k izbiri igre
 
 #### MAYBE:
+- Nivo težavnosti 4
 - Uredi kodo, koda naj bo razporejena v večih datotekah
 - Na zaslonu naj bo slika besede na levi strani, predloga na desni premetane črke pa spodaj (kot je pokazal na predavanjih)
 izbira področja besed. Od tu se preko "nazaj" lahko vrne v osnovni zaslon, k izbiri igre
