@@ -1,6 +1,7 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.3
+import QtMultimedia 5.6
 
 ApplicationWindow {
 
@@ -23,10 +24,15 @@ ApplicationWindow {
     visible: true
     width: resolutions[currentResolution]["height"]
     height: resolutions[currentResolution]["width"]
-    title: "%ProjectName%"
+    title: "Crkovalnik"
 
 
     property int level: 1
+
+    SoundEffect {
+        id: yaay
+        source: "../sounds/yaay.wav"
+    }
 
 
     /***********************************************************
@@ -60,16 +66,11 @@ ApplicationWindow {
             anchors.topMargin: 50
             anchors.right: menu.right
             anchors.rightMargin: 50
-            /*MouseArea {
-                              anchors.fill: parent
-                              onClicked: {
-                                  game.visible = true
-                                  menu.visible = false
-                              }
-                    }*/
+
+
             Timer {
                 id: longPressTimer
-                interval: 10 //your press-and-hold interval here
+                interval: 1000 //your press-and-hold interval here
                 repeat: false
                 running: false
                 onTriggered: {
@@ -80,6 +81,7 @@ ApplicationWindow {
             MouseArea {
                 anchors.fill: parent
                 onPressedChanged: {
+
                     if ( pressed ) {
                         longPressTimer.running = true;
                     } else {
@@ -89,7 +91,9 @@ ApplicationWindow {
             }
         }
 
-
+        /*****************************
+         * startButton
+        ******************************/
         Rectangle {
             id: startContainer
             anchors.horizontalCenter: menu.horizontalCenter
@@ -115,6 +119,10 @@ ApplicationWindow {
             }
 
         }
+
+        /*****************************
+         * exitButton
+        ******************************/
 
         Rectangle {
             id: exitContainer
@@ -156,14 +164,113 @@ ApplicationWindow {
             }
 
         }
+
+
+        /*****************************
+         * settingsWindow
+        ******************************/
+
+
         Rectangle{
+            property string textToShow
             id: settings
             visible: false
-            width: 0
+            width: menu.width/2
             height: menu.height
             anchors.right: menu.right
-            color: "lime"
+            color: "limegreen"
 
+            Image {
+                id: nazaj
+                source: "../icons/arrow.png"
+                width: 50
+                height: 50
+                y:25
+                x:20
+                MouseArea{
+                    anchors.fill: parent
+                    onClicked: {
+                        settings.visible=false
+                    }
+                }
+            }
+            ComboBox {
+                anchors.horizontalCenter:parent.horizontalCenter
+                y: parent.height/2 - 100
+                currentIndex: 0
+                model: ListModel {
+                    id: nivoji
+                    ListElement { text: "Nivo 1"}
+                    ListElement { text: "Nivo 2"}
+                    ListElement { text: "Nivo 3"}
+                    ListElement { text: "Nivo 4"}
+                }
+                Layout.fillWidth: true
+                onCurrentIndexChanged: {
+                    main.level = currentIndex+1
+                    console.debug(main.level)
+                }
+            }
+
+            GroupBox {
+                anchors.horizontalCenter:parent.horizontalCenter
+                anchors.verticalCenter:parent.verticalCenter
+                title: "Zvok"
+
+                RowLayout {
+                    ExclusiveGroup { id: zvokPositionGroup }
+                    RadioButton {
+                        text: "Da"
+                        checked: true
+                        exclusiveGroup: zvokPositionGroup
+                    }
+                    RadioButton {
+                        text: "Ne"
+                        exclusiveGroup: zvokPositionGroup
+                    }
+                }
+
+            }
+
+            GroupBox {
+                anchors.horizontalCenter:parent.horizontalCenter
+                y: parent.height/2 + 100
+                title: "Barva"
+
+                RowLayout {
+                    ExclusiveGroup { id: barvaPositionGroup }
+                    RadioButton {
+                        text: "Da"
+                        checked: true
+                        exclusiveGroup: barvaPositionGroup
+                    }
+                    RadioButton {
+                        text: "Ne"
+                        exclusiveGroup: barvaPositionGroup
+                    }
+                }
+            }
+
+            GroupBox {
+                anchors.horizontalCenter:parent.horizontalCenter
+                y: parent.height/2 + 200
+                title: "Tab Position"
+
+                RowLayout {
+                    ExclusiveGroup { id: tabPositionGroup }
+                    RadioButton {
+                        text: "Top"
+                        checked: true
+                        exclusiveGroup: tabPositionGroup
+                    }
+                    RadioButton {
+                        text: "Bottom"
+                        exclusiveGroup: tabPositionGroup
+                    }
+                }
+            }
+
+            /*
             states: State {
                 name: "anchorRight"
                 when: settings.visible == true
@@ -175,9 +282,9 @@ ApplicationWindow {
 
             transitions: Transition {
                 AnchorAnimation {duration: 3000}
-            }
+            }*/
         }
-        Component.onCompleted: settings.state = "anchorRight"
+        //Component.onCompleted: settings.state = "anchorRight"
 
     }
 
@@ -188,6 +295,9 @@ ApplicationWindow {
     /***********************************************************
      * ImagesGrid
     ***********************************************************/
+
+
+
 
     Rectangle {
         id: imagesGrid
@@ -201,6 +311,13 @@ ApplicationWindow {
             id: besedaModel
         }
 
+        Button{
+            id: backMenu
+            onClicked: {
+                imagesGrid.visible=false
+                menu.visible=true
+            }
+        }
 
         // This is the component where the grid cell is stored
         Component {
@@ -373,6 +490,7 @@ ApplicationWindow {
 
         return array;
     }
+
 
 }
 

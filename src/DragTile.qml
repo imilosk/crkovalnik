@@ -28,7 +28,7 @@ Item {
                 }
             }
             if (game.correctLetters === game.totalLetters){
-                console.log("you win");
+                yaay.play()
             }
         }
 

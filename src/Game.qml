@@ -87,31 +87,43 @@ Rectangle {
     }
 
     // when button is clicked, change all atrributes to previous image attributes
-    Button {
+    Image{
+        id:levo
+        width: 70
+        height: 70
+        source: "../icons/arrow.png"
         x: 50
-        y: main.height - 50
-        width: 50
-        text: "Prev"
-        onClicked: {
-            // prevents out of bounds
-            if (game.index > 0) {
-                game.index--
-                game.updateWord()
+        y: main.height - levo.width - 50
+        MouseArea{
+            anchors.fill:parent
+            onClicked: {
+                // prevents out of bounds
+                if (game.index > 0) {
+                    game.index--
+                    game.updateWord()
+                }
             }
         }
     }
 
     // when button is clicked, change all atrributes to next image attributes
-    Button {
+    Image{
+        id: desno
+        width: 70
+        height: 70
+        source: "../icons/arrow.png"
+        rotation: 180
         x: main.width - 125
-        y: main.height - 50
-        width: 75
-        text: "Next"
-        onClicked: {
-            // prevents out of bounds
-            if (game.index < besedaModel.count - 1) {
-                game.index++
-                game.updateWord()
+        y: main.height - desno.width - 50
+
+        MouseArea{
+            anchors.fill:parent
+            onClicked: {
+                // prevents out of bounds
+                if (game.index < besedaModel.count - 1) {
+                    game.index++
+                    game.updateWord()
+                }
             }
         }
     }
