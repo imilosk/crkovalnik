@@ -17,6 +17,7 @@ Item {
         onReleased: {
             parent = tile.Drag.target !== null ? tile.Drag.target : root
             if (root !== null && tile !== null) {
+                drop_sound.play()
                 var letter = root.objectName;
                 var currentLetter = tile.Drag.target.objectName;
                 // console.log("Kej je: " + letter)
@@ -25,6 +26,10 @@ Item {
                     root.colorKey = "#3DFF3D"
                     parent.enabled = false
                     game.correctLetters++
+
+                }
+                else{
+                    wrong.play()
                 }
             }
             if (game.correctLetters === game.totalLetters){

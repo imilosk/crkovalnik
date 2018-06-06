@@ -25,6 +25,8 @@ Rectangle {
                     id: name
                     font.pointSize: 38
                     anchors.horizontalCenter: parent.horizontalCenter
+
+                    anchors.verticalCenter: parent.verticalCenter
                     text: qsTr(lettersArray[index])
                 }
             }

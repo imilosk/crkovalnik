@@ -8,7 +8,7 @@ Rectangle {
     y: 0
     visible: false
     anchors.fill: parent
-    color: "#202020"
+    color: "#AAAAAA"
     property var imagePath: ""
     property var word: ""
     property var index: -1
@@ -97,6 +97,7 @@ Rectangle {
         MouseArea{
             anchors.fill:parent
             onClicked: {
+                drop_sound.play()
                 // prevents out of bounds
                 if (game.index > 0) {
                     game.index--
@@ -119,6 +120,7 @@ Rectangle {
         MouseArea{
             anchors.fill:parent
             onClicked: {
+                drop_sound.play()
                 // prevents out of bounds
                 if (game.index < besedaModel.count - 1) {
                     game.index++

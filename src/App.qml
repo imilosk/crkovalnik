@@ -1,5 +1,6 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
+import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.3
 import QtMultimedia 5.6
 
@@ -28,10 +29,19 @@ ApplicationWindow {
 
 
     property int level: 1
+    property bool sound_set: true
 
     SoundEffect {
         id: yaay
         source: "../sounds/yaay.wav"
+    }
+    SoundEffect {
+        id: wrong
+        source: "../sounds/wrong.wav"
+    }
+    SoundEffect {
+        id: drop_sound
+        source: "../sounds/drop.wav"
     }
 
 
@@ -44,11 +54,11 @@ ApplicationWindow {
         x: 0
         y: 0
         anchors.fill: parent
-        color: "#202020"
+        color: "#AAAAAA"
 
         Text {
             id: naslov
-            text: "Program za učenje jezika"
+            text: "Črkovalnik"
             anchors.horizontalCenter: menu.horizontalCenter
             font.pointSize: 46
             y: 50
@@ -76,6 +86,7 @@ ApplicationWindow {
                 onTriggered: {
                     sett.pressAndHold()
                     settings.visible = true
+                    drop_sound.play()
                 }
             }
             MouseArea {
@@ -100,7 +111,7 @@ ApplicationWindow {
             anchors.verticalCenter: menu.verticalCenter
             width: 500
             height: 120
-            color: "black"
+            color: "#111111"
 
             Text {
                 id: startText
@@ -115,6 +126,7 @@ ApplicationWindow {
                 onClicked: {
                     imagesGrid.visible = true
                     menu.visible = false
+                    drop_sound.play()
                 }
             }
 
@@ -131,7 +143,7 @@ ApplicationWindow {
             signal pressAndHoldExit()
             width: 500
             height: 80
-            color: "red"
+            color: "#FF4136"
 
             Text {
                 id: exitText
@@ -149,6 +161,7 @@ ApplicationWindow {
                 running: false
                 onTriggered: {
                     exitContainer.pressAndHoldExit()
+                    drop_sound.play()
                     Qt.quit()
                 }
             }
@@ -178,7 +191,7 @@ ApplicationWindow {
             width: menu.width/2
             height: menu.height
             anchors.right: menu.right
-            color: "limegreen"
+            color: "#DDDDDD"
 
             Image {
                 id: nazaj
@@ -191,100 +204,107 @@ ApplicationWindow {
                     anchors.fill: parent
                     onClicked: {
                         settings.visible=false
+                        drop_sound.play()
                     }
                 }
             }
-            ComboBox {
-                anchors.horizontalCenter:parent.horizontalCenter
-                y: parent.height/2 - 100
-                currentIndex: 0
-                model: ListModel {
-                    id: nivoji
-                    ListElement { text: "Nivo 1"}
-                    ListElement { text: "Nivo 2"}
-                    ListElement { text: "Nivo 3"}
-                    ListElement { text: "Nivo 4"}
-                }
-                Layout.fillWidth: true
-                onCurrentIndexChanged: {
-                    main.level = currentIndex+1
-                    console.debug(main.level)
-                }
-            }
 
-            GroupBox {
+
+                ComboBox {
+                    anchors.horizontalCenter:parent.horizontalCenter
+                    y: parent.height/2 - 100
+                    currentIndex: 0
+                    width: 200
+                        height: 60
+                    style: ComboBoxStyle{
+                        font.pointSize: 24
+                    }
+
+                    model: ListModel {
+                        id: nivoji
+                        ListElement { text: "Nivo 1"}
+                        ListElement { text: "Nivo 2"}
+                        ListElement { text: "Nivo 3"}
+                        ListElement { text: "Nivo 4"}
+                    }
+                    Layout.fillWidth: true
+                    onCurrentIndexChanged: {
+                        main.level = currentIndex+1
+                        console.debug(main.level)
+                    }
+                }
+
+
+
+            RowLayout {
+                Text {
+                    id: zvok
+                    text: "Zvok: "
+                    font.pointSize: 24
+                }
                 anchors.horizontalCenter:parent.horizontalCenter
                 anchors.verticalCenter:parent.verticalCenter
-                title: "Zvok"
-
-                RowLayout {
-                    ExclusiveGroup { id: zvokPositionGroup }
-                    RadioButton {
-                        text: "Da"
-                        checked: true
-                        exclusiveGroup: zvokPositionGroup
+                ExclusiveGroup { id: tabPositionGroup }
+                RadioButton {
+                    id: daButton
+                    exclusiveGroup: tabPositionGroup
+                    checked: true
+                    style: RadioButtonStyle {
+                            indicator: Rectangle {
+                                    implicitWidth: 16
+                                    implicitHeight: 16
+                                    radius: 9
+                                    border.color: control.activeFocus ? "darkblue" : "gray"
+                                    border.width: 1
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        visible: control.checked
+                                        color: "#555"
+                                        radius: 9
+                                        anchors.margins: 4
+                                    }
+                            }
+                        }
+                }
+                Text {
+                    id: zvok_Da
+                    text: "Da"
+                    font.pointSize: 26
+                }
+                RadioButton {
+                    id: neButton
+                    exclusiveGroup: tabPositionGroup
+                    Layout.preferredHeight: 40
+                    style: RadioButtonStyle {
+                            indicator: Rectangle {
+                                    implicitWidth: 16
+                                    implicitHeight: 16
+                                    radius: 9
+                                    border.color: control.activeFocus ? "darkblue" : "gray"
+                                    border.width: 1
+                                    Rectangle {
+                                        anchors.fill: parent
+                                        visible: control.checked
+                                        color: "#555"
+                                        radius: 9
+                                        anchors.margins: 4
+                                    }
+                            }
+                        }
+                    onCheckedChanged: {
+                        drop_sound.muted = !drop_sound.muted
+                        wrong.muted = !wrong.muted
+                        yaay.muted = !yaay.muted
                     }
-                    RadioButton {
-                        text: "Ne"
-                        exclusiveGroup: zvokPositionGroup
-                    }
+                }
+                Text {
+                    id: zvok_ne
+                    text: "Ne"
+                    font.pointSize: 26
                 }
 
             }
-
-            GroupBox {
-                anchors.horizontalCenter:parent.horizontalCenter
-                y: parent.height/2 + 100
-                title: "Barva"
-
-                RowLayout {
-                    ExclusiveGroup { id: barvaPositionGroup }
-                    RadioButton {
-                        text: "Da"
-                        checked: true
-                        exclusiveGroup: barvaPositionGroup
-                    }
-                    RadioButton {
-                        text: "Ne"
-                        exclusiveGroup: barvaPositionGroup
-                    }
-                }
-            }
-
-            GroupBox {
-                anchors.horizontalCenter:parent.horizontalCenter
-                y: parent.height/2 + 200
-                title: "Tab Position"
-
-                RowLayout {
-                    ExclusiveGroup { id: tabPositionGroup }
-                    RadioButton {
-                        text: "Top"
-                        checked: true
-                        exclusiveGroup: tabPositionGroup
-                    }
-                    RadioButton {
-                        text: "Bottom"
-                        exclusiveGroup: tabPositionGroup
-                    }
-                }
-            }
-
-            /*
-            states: State {
-                name: "anchorRight"
-                when: settings.visible == true
-                AnchorChanges {
-                    target: settings
-                    anchors.left: parent.left
-                }
-            }
-
-            transitions: Transition {
-                AnchorAnimation {duration: 3000}
-            }*/
         }
-        //Component.onCompleted: settings.state = "anchorRight"
 
     }
 
@@ -305,19 +325,28 @@ ApplicationWindow {
         y: 0
         visible: false
         anchors.fill: parent
-        color: "#202020"
+        color: "#AAAAAA"
 
         ListModel {
             id: besedaModel
         }
 
-        Button{
-            id: backMenu
-            onClicked: {
-                imagesGrid.visible=false
-                menu.visible=true
+        Image {
+            source: "../icons/arrow.png"
+            width: 50
+            height: 50
+            y:25
+            x:20
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    imagesGrid.visible=false
+                    menu.visible=true
+                    drop_sound.play()
+                }
             }
         }
+
 
         // This is the component where the grid cell is stored
         Component {
@@ -382,6 +411,7 @@ ApplicationWindow {
                                 }
 
                                 imagesGrid.visible = false
+                                drop_sound.play()
                             }
                         }
                     }
@@ -437,7 +467,30 @@ ApplicationWindow {
 
     Game {
         id: game
+
+        Image {
+            source: "../icons/arrow.png"
+            width: 50
+            height: 50
+            y:25
+            x:20
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    imagesGrid.visible=true
+                    level1Container.visible = false
+                    level2Container.visible = false
+                    level3Container.visible = false
+                    level4Container.visible = false
+                    game.visible= false
+                    drop_sound.play()
+                }
+            }
+        }
+
     }
+
+
 
     Level1 {
         id: level1Container
