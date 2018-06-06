@@ -14,21 +14,23 @@ polja.
 - Dinamično ustvarjanje povleci-in-spusti polj z upoštevano toleranco, da ni potrebno popolno ujemanje pri "spusti"
 - Nivoji težavnosti 1-3 (se ne preveri, ali je beseda pravilno vpisana)
 - Gumba "Naprej" in "Nazaj" v igralnem zaslonu za spreminjanje slik 
-
-#### TODO: 
 - Preveri, ali je beseda pravilno vpisana
 - Nagrada po pravilno vpisani besedi
-- Settings: glasbo, zvok vklopi/izklopi, črnobele skike (preberi sliko iz datoteke), izbor nivojev
+
+#### FINISH:
+- Uspešno/neuspešno akcijo (premik črke) ustrezno pobarvaj (zeleno/rdeče) - **manjka rdeča barva**
+- Settings: glasbo, zvok vklopi/izklopi, črnobele skike (preberi sliko iz datoteke), izbor nivojev **samo izbor nivojev je narejen**
+- Izhod iz igralnega zaslona naj bo le preko gumba "Nazaj", ki igralca vrne v zaslon kjer izbira področja besed. Od tu se preko "Nazaj" lahko vrne v osnovni zaslon, k izbiri igre - **manjkajo nekateri gumbi**
+
+#### TODO: 
 - Uspešno akcijo (premik črke) naj spremlja nek generičen zvok / klik; prav tako za neuspešno temu ustrezen zvok
-- Uspešno/neuspešno akcijo (premik črke) ustrezno pobarvaj (zeleno/rdeče)
-- Izhod iz igralnega zaslona naj bo le preko gumba "Nazaj", ki igralca vrne v zaslon kjer izbira področja besed. Od tu se preko "Nazaj" lahko vrne v osnovni zaslon, k izbiri igre
+- V nastavitvah naj bo možno izbirati med velikimi in malimi črkami
 
 #### MAYBE:
 - Nivo težavnosti 4
 - Uredi kodo, koda naj bo razporejena v večih datotekah
 - Na zaslonu naj bo slika besede na levi strani, predloga na desni premetane črke pa spodaj (kot je pokazal na predavanjih)
-izbira področja besed. Od tu se preko "nazaj" lahko vrne v osnovni zaslon, k izbiri igre
-- V nastavitvah naj bo možno izbirati med velikimi in malimi črkami
+izbira področja besed
 
 #### KAJ NE BOMO NAREDILI:
 - V primeru tipkovnice, naj utripa oz. se otroku pokaže nek namig na ustrezno tipko. Namig (pomoč) naj bo možno v nastavitvah izklopiti.
