@@ -19,6 +19,7 @@ Rectangle {
         Repeater {
             model: lettersArray
             delegate: DropTile { colorKey: "black" }
+            objectName: lettersArray[index]
         }
     }
 

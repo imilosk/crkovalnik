@@ -19,10 +19,12 @@ Rectangle {
         Repeater {
             model: lettersArray
             delegate: DropTile {
-                colorKey: "red"
+                objectName: lettersArray[index]
+                colorKey: "#888888"
                 Text {
                     id: name
                     font.pointSize: 38
+                    anchors.horizontalCenter: parent.horizontalCenter
                     text: qsTr(lettersArray[index])
                 }
             }
@@ -37,7 +39,9 @@ Rectangle {
         Repeater {
             model: redContainer.lettersArray
             delegate: DragTile {
-                colorKey: "red"
+                id: test1
+                objectName: lettersArray[index]
+                colorKey: "#888888"
             }
         }
     }

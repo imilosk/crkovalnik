@@ -14,11 +14,26 @@ Item {
 
         drag.target: tile
 
-        onReleased: parent = tile.Drag.target !== null ? tile.Drag.target : root
+        onReleased: {
+            parent = tile.Drag.target !== null ? tile.Drag.target : root
+            if (root !== null && tile !== null) {
+                var letter = root.objectName;
+                var currentLetter = tile.Drag.target.objectName;
+                // console.log("Kej je: " + letter)
+                // console.log("Kej bi moglo bit: " + currentLetter)
+                if (letter === currentLetter) {
+                    root.colorKey = "#3DFF3D"
+                    parent.enabled = false
+                    game.correctLetters++
+                }
+            }
+            if (game.correctLetters === game.totalLetters){
+                console.log("you win");
+            }
+        }
 
         Rectangle {
             id: tile
-
             width: 64; height: 64
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
@@ -39,7 +54,9 @@ Item {
             }
             states: State {
                 when: mouseArea.drag.active
-                ParentChange { target: tile; parent: root }
+                ParentChange {
+                    target: tile; parent: root
+                }
                 AnchorChanges { target: tile; anchors.verticalCenter: undefined; anchors.horizontalCenter: undefined }
             }
 

@@ -6,6 +6,7 @@ Rectangle {
     property var lettersArray: [""]
     property var columnNumb: lettersArray.length
     property var globalX: lettersArray.length
+    property var lettersArrayShuffled: [""]
     x: globalX
 
     Grid {
@@ -18,7 +19,10 @@ Rectangle {
 
         Repeater {
             model: lettersArray
-            delegate: DropTile { colorKey: "green" }
+            delegate: DropTile {
+                objectName: lettersArray[index]
+                colorKey: "#888888"
+            }
         }
     }
 
@@ -28,9 +32,10 @@ Rectangle {
         anchors.margins: 5
         width: 64
         Repeater {
-            model: redContainer.lettersArray
+            model: redContainer.lettersArrayShuffled
             delegate: DragTile {
-                colorKey: "green"
+                colorKey: "#888888"
+                objectName: lettersArrayShuffled[index]
             }
         }
     }

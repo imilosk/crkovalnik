@@ -18,7 +18,10 @@ Rectangle {
 
         Repeater {
             model: lettersArray
-            delegate: DropTile { colorKey: "red" }
+            delegate: DropTile {
+                objectName: lettersArray[index]
+                colorKey: "#888888"
+            }
         }
     }
 
@@ -30,7 +33,8 @@ Rectangle {
         Repeater {
             model: redContainer.lettersArray
             delegate: DragTile {
-                colorKey: "red"
+                colorKey: "#888888"
+                objectName: lettersArray[index]
             }
         }
 

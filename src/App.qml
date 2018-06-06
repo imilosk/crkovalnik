@@ -26,7 +26,7 @@ ApplicationWindow {
     title: "%ProjectName%"
 
 
-    property int level: 3
+    property int level: 1
 
 
     /***********************************************************
@@ -38,7 +38,7 @@ ApplicationWindow {
         x: 0
         y: 0
         anchors.fill: parent
-        color: "white"
+        color: "#202020"
 
         Text {
             id: naslov
@@ -195,7 +195,7 @@ ApplicationWindow {
         y: 0
         visible: false
         anchors.fill: parent
-        color: "azure"
+        color: "#202020"
 
         ListModel {
             id: besedaModel
@@ -341,7 +341,8 @@ ApplicationWindow {
     Level3 {
         id: level3Container
         visible: false
-        lettersArray: shuffle(game.word.split(""))
+        lettersArray: game.word.split("")
+        lettersArrayShuffled: shuffle(game.word.split(""))
         globalX: main.width / 2 - 64 * (game.word.split("").length) / 2
         y: main.height / 2
     }
@@ -372,7 +373,6 @@ ApplicationWindow {
 
         return array;
     }
-
 
 }
 

@@ -13,6 +13,8 @@ Rectangle {
     property var word: ""
     property var index: -1
     property bool textShown: false
+    property int correctLetters: 0
+    property int totalLetters: word.length
 
     Image {
         id: gameImageContainer
@@ -44,6 +46,8 @@ Rectangle {
         gameImageContainer.source = besedaModel.get(game.index).slika
         gameTextContainer.text = besedaModel.get(game.index).tekst
         game.word = gameTextContainer.text
+        game.correctLetters = 0;
+        game.totalLetters = game.word.length
 
         if (main.level === 1){
             level1Container.lettersArray = [""]                    // MUST BE HERE TO RESET THE ARRAY IF THE SAME WORD APPEARS TWICE IN WORDS
@@ -69,6 +73,7 @@ Rectangle {
             level1Container.visible = false
             level2Container.visible = false
             level4Container.visible = false
+            level3Container.lettersArrayShuffled = shuffle(game.word.split(""))
             gameTextContainer.visible = false
         } else if (main.level === 4) {
             level4Container.lettersArray = [""]                    // MUST BE HERE TO RESET THE ARRAY IF THE SAME WORD APPEARS TWICE IN WORDS
