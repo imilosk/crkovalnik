@@ -127,6 +127,7 @@ ApplicationWindow {
                     imagesGrid.visible = true
                     menu.visible = false
                     drop_sound.play()
+                    imagesGrid.stupidProperty = 1
                 }
             }
 
@@ -230,6 +231,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     onCurrentIndexChanged: {
                         main.level = currentIndex+1
+                        imagesGrid.stupidProperty = 1
                         console.debug(main.level)
                     }
                 }
@@ -320,6 +322,7 @@ ApplicationWindow {
 
 
     Rectangle {
+         property int stupidProperty: 1
         id: imagesGrid
         x: 0
         y: 0
@@ -351,7 +354,6 @@ ApplicationWindow {
         // This is the component where the grid cell is stored
         Component {
             id: besedaDelegate
-
             Column {
                 /*
                 Text {
@@ -409,7 +411,7 @@ ApplicationWindow {
                                     level3Container.visible = false
                                     game.textShown = false
                                 }
-
+                                game.updateWord()
                                 imagesGrid.visible = false
                                 drop_sound.play()
                             }
@@ -467,7 +469,6 @@ ApplicationWindow {
 
     Game {
         id: game
-
         Image {
             source: "../icons/arrow.png"
             width: 50
@@ -483,6 +484,7 @@ ApplicationWindow {
                     level3Container.visible = false
                     level4Container.visible = false
                     game.visible= false
+                    imagesGrid.stupidProperty = 1
                     drop_sound.play()
                 }
             }
